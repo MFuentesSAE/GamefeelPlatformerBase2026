@@ -8,7 +8,6 @@ namespace Platformer
 	{
 		public float movingSpeed;
 		public float jumpForce;
-		public bool blockInput;
 
 		private float moveInput;
 		private int jumpCounter = 0;
@@ -50,10 +49,6 @@ namespace Platformer
 		void Update()
 		{
 			CheckGround();
-			if (blockInput)
-			{
-				return;
-			}
 
 			moveInput = Input.GetAxisRaw("Horizontal");
 			Vector3 direction = transform.right * moveInput;
@@ -92,14 +87,8 @@ namespace Platformer
 			}
 		}
 
-		public void BlockInput(bool value)
-		{
-			blockInput = value;
-		}
-
 		public void Death()
 		{
-			BlockInput(true);
 			animator?.SetBool("Death", true);
 		}
 
