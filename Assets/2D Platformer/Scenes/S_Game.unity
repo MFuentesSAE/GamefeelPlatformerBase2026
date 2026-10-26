@@ -7099,7 +7099,7 @@ GameObject:
   - component: {fileID: 1028008302}
   - component: {fileID: 1028008301}
   - component: {fileID: 1028008303}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
