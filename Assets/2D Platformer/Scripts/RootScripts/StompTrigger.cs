@@ -13,7 +13,7 @@ public class StompTrigger : MonoBehaviour
 
 		if(hp != null)
 		{
-			hp.RemoveHp(1);
+			hp.RemoveHp(hp.maxHp);
 			onStompEvent?.Invoke();
 
 			if (playerRigidbody != null)

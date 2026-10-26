@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Platformer
 {
@@ -18,8 +20,11 @@ namespace Platformer
 		private bool isGrounded;
 		public Transform groundCheck;
 		public LayerMask groundMask;
+		public SpriteRenderer renderer;
 
 		private Rigidbody2D rigidbody;
+
+		[SerializeField]
 		private Animator animator;
 		private GameManager gameManager;
 
@@ -32,7 +37,6 @@ namespace Platformer
 		void Start()
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
-			animator = GetComponent<Animator>();
 			gameManager = GameManager.instance;
 
 			if (hp == null)
@@ -71,10 +75,7 @@ namespace Platformer
 					return;
 				}
 
-				jumpCounter = Mathf.Clamp(jumpCounter, 0, MAX_JUMPS - 1);
-				rigidbody.linearVelocity = Vector2.zero;
-				rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-				animator?.SetBool("Jump", true);
+				Jump();
 			}
 
 			if (!facingRight && moveInput > 0)
@@ -100,13 +101,32 @@ namespace Platformer
 			transform.localScale = Scaler;
 		}
 
+		private void Jump()
+		{
+			jumpCounter = Mathf.Clamp(jumpCounter, 0, MAX_JUMPS - 1);
+			rigidbody.linearVelocity = Vector2.zero;
+			rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+			animator?.SetBool("Jump", true);
+		}
+
+		private void Land()
+		{
+			Debug.Log("Landed");
+		}
+
 		private void CheckGround()
 		{
+			bool wasGrounded = isGrounded;
 			Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.transform.position, groundedRadius, groundMask);
 			isGrounded = colliders.Length > 0;
 
 			if (isGrounded)
 			{
+				if (!wasGrounded)
+				{
+					Land();
+				}
+
 				jumpCounter = 0;
 			}
 		}
