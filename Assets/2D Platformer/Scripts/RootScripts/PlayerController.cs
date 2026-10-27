@@ -155,15 +155,6 @@ namespace Platformer
 			}
 		}
 
-		private void OnTriggerEnter2D(Collider2D other)
-		{
-			if (other.gameObject.tag == "Coin")
-			{
-				gameManager?.AddCoins(1);
-				other.gameObject.SetActive(false);
-			}
-		}
-
 		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.yellow;

@@ -11,7 +11,7 @@ namespace Platformer
         public int coinsCounter = 0;
 
         [Range(0, 10)]
-        public int coinsToCollect = 1;
+        public int coinsToCollect = 3;
 
         public GameObject playerGameObject;
         private PlayerController player;

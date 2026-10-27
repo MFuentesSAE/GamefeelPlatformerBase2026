@@ -1,14 +1,18 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Flicker : MonoBehaviour
 {
     public SpriteRenderer renderer;
+    public GameObject playerGameObject;
     public Color targetColor;
     public float tweenTime;
     public int loops;
     public Ease ease;
     public LoopType loopType;
+
+    public UnityEvent onStartFlickr, OnEndFlickr;
 
     private Tween flickerTween;
 
@@ -37,11 +41,14 @@ public class Flicker : MonoBehaviour
 
     private void Inmunity()
     {
-        renderer.gameObject.layer = inmuneLayer;
-    }
+		playerGameObject.layer = inmuneLayer;
+        onStartFlickr.Invoke();
+
+	}
 
     private void EndInmunity()
     {
-        renderer.gameObject.layer = playerLayer;
+		playerGameObject.layer = playerLayer;
+        OnEndFlickr.Invoke();
     }
 }
