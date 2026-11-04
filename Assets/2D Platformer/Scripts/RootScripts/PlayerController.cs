@@ -25,7 +25,6 @@ namespace Platformer
 		private Rigidbody2D rigidbody;
 
 		[SerializeField]
-		private Animator animator;
 		private GameManager gameManager;
 
 		[SerializeField]
@@ -60,9 +59,6 @@ namespace Platformer
 
 			if (isGrounded)
 			{
-				bool moving = Mathf.Abs(moveInput) > 0 ? true : false;
-				animator?.SetBool("Moving", moving);
-				animator?.SetBool("Jump", false);
 
 			}
 
@@ -90,7 +86,7 @@ namespace Platformer
 
 		public void Death()
 		{
-			animator?.SetBool("Death", true);
+
 		}
 
 		private void Flip()
@@ -106,7 +102,6 @@ namespace Platformer
 			jumpCounter = Mathf.Clamp(jumpCounter, 0, MAX_JUMPS - 1);
 			rigidbody.linearVelocity = Vector2.zero;
 			rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-			animator?.SetBool("Jump", true);
 		}
 
 		private void Land()
