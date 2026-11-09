@@ -11,20 +11,31 @@ namespace Platformer
 		public float movingSpeed;
 		public float jumpForce;
 
+		[Range(2, 10)]
+		public float dashForce;
+
 		private float moveInput;
 		private int jumpCounter = 0;
 
 		private bool facingRight = false;
+		public bool blockInputs;
+
+		private bool attackBlocked;
+
+		[SerializeField]
+		private GameObject attackCollider;
 
 		[SerializeField]
 		private bool isGrounded;
 		public Transform groundCheck;
 		public LayerMask groundMask;
 		public SpriteRenderer renderer;
+		private Vector3 direction;
 
 		private Rigidbody2D rigidbody;
 
 		[SerializeField]
+		private Animator animator;
 		private GameManager gameManager;
 
 		[SerializeField]
@@ -32,6 +43,19 @@ namespace Platformer
 		private const float KNOCKBACK_FORCE = 150;
 		private const int MAX_JUMPS = 2;
 		public float groundedRadius = 1;
+
+		private string animMove = "Moving";
+		private string animJump = "Jump";
+		private string animDeath = "Death";
+		private string animIdle = "Idle";
+		private string animDash = "Dash";
+		private string animAttack = "Attack";
+
+
+		private int playerLayer = 3;
+		private int inmuneLayer = 8;
+
+		Tween dashTween;
 
 		void Start()
 		{
@@ -43,6 +67,8 @@ namespace Platformer
 				hp = transform.GetComponent<HpPlayer>();
 			}
 
+			EndAttackCollider();
+
 		}
 
 		private void FixedUpdate()
@@ -53,12 +79,24 @@ namespace Platformer
 		{
 			CheckGround();
 
+			if (!hp.IsAlive() || blockInputs)
+			{
+				return;
+			}
+
 			moveInput = Input.GetAxisRaw("Horizontal");
-			Vector3 direction = transform.right * moveInput;
+			direction = transform.right * moveInput;
 			transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, movingSpeed * Time.deltaTime);
 
 			if (isGrounded)
 			{
+				bool moving = Mathf.Abs(moveInput) > 0 ? true : false;
+				animator?.SetBool(animMove, moving);
+
+				if (Input.GetKeyDown(KeyCode.LeftShift))
+				{
+					StartDash();
+				}
 
 			}
 
@@ -74,6 +112,12 @@ namespace Platformer
 				Jump();
 			}
 
+
+			if (Input.GetMouseButtonDown(0))
+			{
+				Attack();
+			}
+
 			if (!facingRight && moveInput > 0)
 			{
 				Flip();
@@ -86,7 +130,7 @@ namespace Platformer
 
 		public void Death()
 		{
-
+			animator?.SetTrigger(animDeath);
 		}
 
 		private void Flip()
@@ -102,12 +146,55 @@ namespace Platformer
 			jumpCounter = Mathf.Clamp(jumpCounter, 0, MAX_JUMPS - 1);
 			rigidbody.linearVelocity = Vector2.zero;
 			rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+			animator?.SetTrigger(animJump);
 		}
 
 		private void Land()
 		{
+			animator?.SetTrigger(animIdle);
 			Debug.Log("Landed");
 		}
+
+		private void Attack()
+		{
+			if (!attackBlocked)
+			{
+				animator?.SetTrigger(animAttack);
+				attackCollider.gameObject.SetActive(true);
+				attackBlocked = true;
+			}
+		}
+
+		private void StartDash()
+		{
+			gameObject.layer = inmuneLayer;
+			animator.SetTrigger(animDash);
+
+			dashTween?.Kill();
+			rigidbody.linearVelocity = Vector2.zero;
+			float direction = facingRight ? 1 : -1;
+			rigidbody.AddForceX(direction * 10, ForceMode2D.Impulse);
+			blockInputs = true;
+		}
+
+		#region AnimEvents
+		public void EndDash()
+		{
+			gameObject.layer = playerLayer;
+			rigidbody.linearVelocity = Vector2.zero;
+			blockInputs = false;
+		}
+
+		public void UnblockAttack()
+		{
+			attackBlocked = false;
+		}
+
+		public void EndAttackCollider()
+		{
+			attackCollider.SetActive(false);
+		}
+		#endregion
 
 		private void CheckGround()
 		{
