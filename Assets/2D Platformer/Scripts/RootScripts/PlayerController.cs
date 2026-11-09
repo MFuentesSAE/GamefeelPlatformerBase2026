@@ -20,7 +20,7 @@ namespace Platformer
 		private bool facingRight = false;
 		public bool blockInputs;
 
-		private bool attackBlocked;
+		private bool attacking;
 
 		[SerializeField]
 		private GameObject attackCollider;
@@ -86,7 +86,9 @@ namespace Platformer
 
 			moveInput = Input.GetAxisRaw("Horizontal");
 			direction = transform.right * moveInput;
+
 			transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, movingSpeed * Time.deltaTime);
+			
 
 			if (isGrounded)
 			{
@@ -143,6 +145,11 @@ namespace Platformer
 
 		private void Jump()
 		{
+			if (attacking)
+			{
+				return;
+			}
+
 			jumpCounter = Mathf.Clamp(jumpCounter, 0, MAX_JUMPS - 1);
 			rigidbody.linearVelocity = Vector2.zero;
 			rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
@@ -151,22 +158,29 @@ namespace Platformer
 
 		private void Land()
 		{
+			UnblockAttack();
 			animator?.SetTrigger(animIdle);
 			Debug.Log("Landed");
 		}
 
 		private void Attack()
 		{
-			if (!attackBlocked)
+			if (!attacking)
 			{
+				rigidbody.linearVelocityX = 0;
 				animator?.SetTrigger(animAttack);
 				attackCollider.gameObject.SetActive(true);
-				attackBlocked = true;
+				attacking = true;
 			}
 		}
 
 		private void StartDash()
 		{
+			if (attacking)
+			{
+				return;
+			}
+
 			gameObject.layer = inmuneLayer;
 			animator.SetTrigger(animDash);
 
@@ -187,12 +201,14 @@ namespace Platformer
 
 		public void UnblockAttack()
 		{
-			attackBlocked = false;
+			EndAttackCollider();
+			attacking = false;
 		}
 
 		public void EndAttackCollider()
 		{
 			attackCollider.SetActive(false);
+			attacking = false;
 		}
 		#endregion
 
