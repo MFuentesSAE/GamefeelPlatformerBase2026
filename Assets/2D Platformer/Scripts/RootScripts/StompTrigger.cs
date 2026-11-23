@@ -14,6 +14,7 @@ public class StompTrigger : MonoBehaviour
 		{
 			hp.RemoveHp(hp.maxHp);
 			onStompEvent?.Invoke();
+			FreezeFrame.instance.Freeze();
         }
 	}
 }
