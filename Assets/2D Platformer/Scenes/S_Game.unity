@@ -8903,17 +8903,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7873588928898685944, guid: 23035e71af28fbb46a389ba66a0a5430, type: 3}
   m_PrefabInstance: {fileID: 7873588928309003796}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1462531201 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5378906815828555761, guid: 23035e71af28fbb46a389ba66a0a5430, type: 3}
-  m_PrefabInstance: {fileID: 7873588928309003796}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1e91e730d4db14fa12f72115832276, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalSoundManager
 --- !u!1 &1507470568
 GameObject:
   m_ObjectHideFlags: 0
@@ -10465,10 +10454,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 902205334}
     m_Modifications:
-    - target: {fileID: 4063989321294089252, guid: 23035e71af28fbb46a389ba66a0a5430, type: 3}
-      propertyPath: soundManagerEnemy
-      value: 
-      objectReference: {fileID: 1462531201}
     - target: {fileID: 7873588928898685938, guid: 23035e71af28fbb46a389ba66a0a5430, type: 3}
       propertyPath: m_Name
       value: Enemy
