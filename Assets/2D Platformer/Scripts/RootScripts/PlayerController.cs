@@ -57,6 +57,9 @@ namespace Platformer
 
 		Tween dashTween;
 
+		[SerializeField]
+        private LocalSoundManager attackSoundManager;
+
 		void Start()
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
@@ -167,7 +170,9 @@ namespace Platformer
 		{
 			if (!attacking)
 			{
-				rigidbody.linearVelocityX = 0;
+				//attackSoundManager.PlayWithRandomPitch("Attack1", 0.8f, 1.8f);
+				attackSoundManager.PlayRandomSound(true, 0.95f, 1.8f);
+                rigidbody.linearVelocityX = 0;
 				animator?.SetTrigger(animAttack);
 				attackCollider.gameObject.SetActive(true);
 				attacking = true;

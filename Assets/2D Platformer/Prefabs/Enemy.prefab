@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 1449881804780183223}
   - component: {fileID: 2367412024886369351}
   - component: {fileID: 4063989321294089252}
+  - component: {fileID: 5378906815828555761}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
@@ -265,3 +266,24 @@ MonoBehaviour:
   sprite: {fileID: 7873588928898685951}
   collider: {fileID: 2367412024886369351}
   rb: {fileID: 7873588928898685949}
+  soundManagerEnemy: {fileID: 5378906815828555761}
+--- !u!114 &5378906815828555761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873588928898685938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1e91e730d4db14fa12f72115832276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalSoundManager
+  soundList:
+  - soundName: Hurt
+    audioClip: {fileID: 8300000, guid: 33aadf0f35f43a74b955fdb7f042751c, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    playOnAwake: 0
+    source: {fileID: 0}

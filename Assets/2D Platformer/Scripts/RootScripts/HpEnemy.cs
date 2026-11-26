@@ -18,11 +18,17 @@ public class HpEnemy : HpBase
     private float camFrequency = 2;
     private float shakeDuration = 0.7f;
 
+	public LocalSoundManager soundManagerEnemy;
+
 
     public override void RemoveHp(int amount)
 	{
 		base.RemoveHp(amount);
-		if(currentHp <= 0)
+
+		soundManagerEnemy.PlaySound("Hurt");
+
+
+        if (currentHp <= 0)
 		{
 			VirtualCameraManager.instance.ShakeCamera(camAmplitude, camFrequency, shakeDuration);
 			Freeze();
